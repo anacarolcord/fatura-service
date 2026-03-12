@@ -43,8 +43,8 @@ public class TransacaoController {
 
     @GetMapping("/datas/{idUsuario}")
     public List<TransacaoResponseDTO> listarPorData(@PathVariable Long idUsuario,
-                                                    @RequestParam @DateTimeFormat LocalDateTime inicio,
-                                                    @RequestParam @DateTimeFormat LocalDateTime fim){
+                                                    @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime inicio,
+                                                    @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime fim){
         return transacaoService.listarEntreDatas(idUsuario,inicio,fim);
     }
 
