@@ -18,17 +18,17 @@ import java.util.List;
 @Service
 public class TransacaoService {
 
-      TransacaoRepository transacaoRepository;
+      private final TransacaoRepository transacaoRepository;
 
     public TransacaoResponseDTO salvarTransacao(TransacaoRequestDTO requestDTO){
         TipoConta tipoConta = requestDTO.tipoConta();
 
         switch (tipoConta){
-            case DEBITO -> {
+            case CREDITO -> {
                 Transacao transacao = toTransacao(requestDTO);
                 return toResponse(transacaoRepository.salvarTransacaoCredito(transacao));
             }
-            case CREDITO -> {
+            case DEBITO -> {
                 Transacao transacao = toTransacao(requestDTO);
                 return toResponse(transacaoRepository.salvarTransacaoDebito(transacao));
             }

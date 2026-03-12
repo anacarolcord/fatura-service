@@ -6,3 +6,4 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/fatura-db
+      uuid-representation: standard

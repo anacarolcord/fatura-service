@@ -3,6 +3,7 @@ package com.fatura_service.controller;
 import com.fatura_service.dto.TransacaoRequestDTO;
 import com.fatura_service.dto.TransacaoResponseDTO;
 import com.fatura_service.service.TransacaoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +15,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/transacoes")
 public class TransacaoController {
-      TransacaoService transacaoService;
+
+    private final TransacaoService transacaoService;
 
     @PostMapping
     public TransacaoResponseDTO salvarTransacao(@RequestBody TransacaoRequestDTO request){

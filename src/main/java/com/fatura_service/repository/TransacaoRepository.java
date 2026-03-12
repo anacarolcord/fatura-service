@@ -21,9 +21,5 @@ public interface TransacaoRepository {
     List<Transacao> findAllByIdUsuarioAndTipoConta(Long idUsuario, TipoConta tipoConta);
     List<Transacao> findByUsuarioAndDate(Long idUsuario, LocalDateTime dataInicio, LocalDateTime dataFim);
 
-    //    List<Transacao> findAllByTipoTransacao(TipoTransacao tipoTransacao);
-//    List<Transacao> findAllByStatusTransacao(StatusTransacao statusTransacao);
-//    List<Transacao> findAllByTipoConta(TipoConta tipoConta);
-
 
 }
