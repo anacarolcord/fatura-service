@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Repository
@@ -24,13 +26,11 @@ public  class TransacaoMongoTemplateImpl implements TransacaoRepository {
 
     @Override
     public Transacao salvarTransacaoCredito(Transacao transacao){
-        transacao.setIdTransacao(UUID.randomUUID());
         return mongoTemplate.save(transacao, "FATURA");
     }
 
     @Override
     public Transacao salvarTransacaoDebito(Transacao transacao){
-        transacao.setIdTransacao(UUID.randomUUID());
         return mongoTemplate.save(transacao,"EXTRATO");
     }
 
@@ -38,15 +38,26 @@ public  class TransacaoMongoTemplateImpl implements TransacaoRepository {
     public List<Transacao> findAllByIdUsuario(Long idUsuario){
         Query query = Query.query(Criteria.where("idUsuario").is(idUsuario));
 
-        return mongoTemplate.find(query, Transacao.class);
+        List <Transacao> transacoesCredito = mongoTemplate.find(query, Transacao.class, "FATURA");
+        List <Transacao> transacoesDebito = mongoTemplate.find(query, Transacao.class, "EXTRATO");
+
+        List<Transacao> todasTransacoes = new ArrayList<>();
+        todasTransacoes.addAll(transacoesCredito);
+        todasTransacoes.addAll(transacoesDebito);
+
+        return todasTransacoes;
+
     }
 
     @Override
     public List<Transacao> findAllByIdUsuarioAndTipoConta(Long idUsuario, TipoConta tipoConta){
-
         Query query = Query.query(Criteria.where("idUsuario").is(idUsuario).and("tipoConta").is(tipoConta));
 
-        return mongoTemplate.find(query, Transacao.class);
+        if (Objects.equals(tipoConta,TipoConta.CREDITO)){
+            return mongoTemplate.find(query, Transacao.class, "FATURA");
+        }else{
+            return mongoTemplate.find(query, Transacao.class, "EXTRATO");
+        }
     }
 
     @Override
@@ -56,7 +67,14 @@ public  class TransacaoMongoTemplateImpl implements TransacaoRepository {
         Query query = Query.query(Criteria.where("idUsuario").is(idUsuario)
                 .and("dataCriacao").gte(dataInicio).lte(dataFim));
 
-        return mongoTemplate.find(query, Transacao.class);
+        List <Transacao> transacoesCredito = mongoTemplate.find(query, Transacao.class, "FATURA");
+        List <Transacao> transacoesDebito = mongoTemplate.find(query, Transacao.class, "EXTRATO");
+
+        List<Transacao> todasTransacoes = new ArrayList<>();
+        todasTransacoes.addAll(transacoesCredito);
+        todasTransacoes.addAll(transacoesDebito);
+
+        return todasTransacoes;
     }
 
 

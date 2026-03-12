@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 
 @RequiredArgsConstructor
@@ -40,27 +41,27 @@ public class TransacaoService {
 
     }
 
-    public List<TransacaoResponseDTO> listarTodasPorUsuario(TransacaoRequestDTO requestDTO){
+    public List<TransacaoResponseDTO> listarTodasPorUsuario(Long idUsuario){
 
-        List<Transacao> transacoesUsuario =  transacaoRepository.findAllByIdUsuario(requestDTO.idUsuario());
+        List<Transacao> transacoesUsuario =  transacaoRepository.findAllByIdUsuario(idUsuario);
 
         return transacoesUsuario.stream()
                 .map(this::toResponse)
                 .toList();
     }
 
-    public List<TransacaoResponseDTO> listarPorUsuarioTipoConta(TransacaoRequestDTO requestDTO){
+    public List<TransacaoResponseDTO> listarPorUsuarioTipoConta(Long idUsuario, TipoConta tipoConta){
         List<Transacao> transacoes = transacaoRepository
-                .findAllByIdUsuarioAndTipoConta(requestDTO.idUsuario(), requestDTO.tipoConta());
+                .findAllByIdUsuarioAndTipoConta(idUsuario, tipoConta);
 
         return transacoes.stream()
                 .map(this::toResponse)
                 .toList();
     }
 
-    public List<TransacaoResponseDTO> listarEntreDatas(TransacaoRequestDTO request, LocalDateTime inicio, LocalDateTime fim){
+    public List<TransacaoResponseDTO> listarEntreDatas(Long idUsuario, LocalDateTime inicio, LocalDateTime fim){
 
-        List<Transacao> transacoesDatas = transacaoRepository.findByUsuarioAndDate(request.idUsuario(), inicio, fim);
+        List<Transacao> transacoesDatas = transacaoRepository.findByUsuarioAndDate(idUsuario, inicio, fim);
 
         return transacoesDatas.stream()
                 .map(this::toResponse)
@@ -69,6 +70,7 @@ public class TransacaoService {
 
     public Transacao toTransacao(TransacaoRequestDTO requestDTO){
         return Transacao.builder()
+                .idTransacao(UUID.randomUUID())
                 .dataCriacao(LocalDateTime.now())
                 .idUsuario(requestDTO.idUsuario())
                 .valor(requestDTO.valor())
@@ -83,6 +85,7 @@ public class TransacaoService {
                 .valor(transacao.getValor())
                 .statusTransacao(transacao.getStatusTransacao())
                 .dataCriacao(transacao.getDataCriacao())
+                .tipoConta(transacao.getTipoConta())
                 .build();
 
     }
