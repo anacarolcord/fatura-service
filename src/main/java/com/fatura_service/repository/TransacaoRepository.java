@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TransacaoRepository extends MongoRepository<Transacao, UUID> {
+public interface TransacaoRepository {
 
     Transacao salvarTransacaoCredito(Transacao transacao);
     Transacao salvarTransacaoDebito(Transacao transacao);

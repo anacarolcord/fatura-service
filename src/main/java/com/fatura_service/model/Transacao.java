@@ -16,7 +16,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@RequiredArgsConstructor
 public class Transacao {
 
     @Id
